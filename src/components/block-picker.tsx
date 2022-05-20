@@ -1,8 +1,13 @@
 import React from "react";
 import styled from "styled-components";
 import { Button } from "@blueprintjs/core";
+import { CustomButton } from "../components/blocks/custombutton";
+import { Custom } from "../components/blocks/custom";
+import { useState } from 'react'; 
+
 
 import blocks from "../components/blocks";
+
 
 const Container = styled.div`
   webkit-box-shadow: 0 0 0 1px rgba(16, 22, 26, 0.1),
@@ -44,18 +49,47 @@ const StyledButton = styled(Button)`
   width: 80%;
 `;
 
+
+
+const PreviewButton = styled(Button)`
+  background-color: #9fb3c8 !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  color: #102a43 !important;
+  font-weight: bold;
+  margin: 5px auto;
+  padding: 10px;
+  text-transform: capitalize;
+  width: 30%;
+  float:right;
+`;
+
 interface BlockPickerProps {
-  addBlock: (blockName: string) => void;
+  addBlock: (blockName: string,) => void;
   className?: string;
 }
 
 const BlockPicker: React.FunctionComponent<BlockPickerProps> = ({ addBlock, className }) => {
+
+  const [components, setComponents] = useState(["Sample Component"]); 
+  
+  function addComponent() { 
+    
+    setComponents([...components, "Sample Component"]) 
+    
+  } 
+  
   return (
     <Container className={className}>
       <HeaderSection>
         <HeaderText> Add a Block </HeaderText>
+        
+        
+        <PreviewButton>Preview Site</PreviewButton>
       </HeaderSection>
       <BlockSection>
+        <CustomButton onClick={addComponent} text="Add Block"></CustomButton>
+        {components.map((item, i) => ( <Custom text={item} /> ))} 
         {Object.keys(blocks).map((blockName: string, index: number) => (
           <StyledButton
             data-testid={`block-add-${blockName}`}

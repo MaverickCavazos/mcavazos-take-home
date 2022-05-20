@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import Head from "next/head";
 import styled from "styled-components";
 import { Toaster } from "@blueprintjs/core";
+import ReactDOM from "react-dom";
 
 import * as api from './api';
 
@@ -47,6 +48,14 @@ const defaultBlocks: Block[] = [
     type: "footer",
     position: 2,
     configData: null
+  },
+  {
+    id: 4,
+    type: "custom",
+    position: 3,
+    configData: {
+      title: 'Default Title'
+    },
   }
 ];
 
@@ -69,6 +78,10 @@ export default function Home(): JSX.Element {
     }
     getBlocks();
   }, []);
+
+ /*  const createBlock = (blockname: BlockType) => {
+
+  } */
 
   // TODO: call api to save block
   const addBlock = (blockName: BlockType) => {
