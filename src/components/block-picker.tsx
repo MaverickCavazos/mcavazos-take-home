@@ -1,9 +1,13 @@
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { Button } from "@blueprintjs/core";
+
+//add new block imports
 import { CustomButton } from "../components/blocks/custombutton";
 import { Custom } from "../components/blocks/custom";
-import { useState } from 'react'; 
+import Preview from './preview';
+import { createPortal } from "react-dom";
+
 
 
 import blocks from "../components/blocks";
@@ -64,6 +68,40 @@ const PreviewButton = styled(Button)`
   float:right;
 `;
 
+
+const RenderInWindow = (props) => {
+  const [container, setContainer] = useState(null);
+  const newWindow = useRef(null);
+
+  useEffect(() => {
+    
+    setContainer(document.createElement("div"));
+  }, []);
+
+  useEffect(() => {
+    
+    if (container) {
+     
+      newWindow.current = window.open(
+        "",
+        "",
+        "width=600,height=400,left=200,top=200"
+      );
+      
+      newWindow.current.document.body.appendChild(container);
+
+      
+      const curWindow = newWindow.current;
+
+     
+      return () => curWindow.close();
+    }
+  }, [container]);
+
+  return container && createPortal(props.children, container);
+};
+
+
 interface BlockPickerProps {
   addBlock: (blockName: string,) => void;
   className?: string;
@@ -71,6 +109,7 @@ interface BlockPickerProps {
 
 const BlockPicker: React.FunctionComponent<BlockPickerProps> = ({ addBlock, className }) => {
 
+  //lines for the add new block feature
   const [components, setComponents] = useState(["Sample Component"]); 
   
   function addComponent() { 
@@ -78,6 +117,10 @@ const BlockPicker: React.FunctionComponent<BlockPickerProps> = ({ addBlock, clas
     setComponents([...components, "Sample Component"]) 
     
   } 
+
+  const [open, setOpen] = useState();
+
+   
   
   return (
     <Container className={className}>
@@ -85,11 +128,14 @@ const BlockPicker: React.FunctionComponent<BlockPickerProps> = ({ addBlock, clas
         <HeaderText> Add a Block </HeaderText>
         
         
-        <PreviewButton>Preview Site</PreviewButton>
+        <PreviewButton onClick={() => setOpen(true)} text="Preview">
+          {open && <RenderInWindow>Page preview</RenderInWindow>}
+        </PreviewButton>
       </HeaderSection>
       <BlockSection>
         <CustomButton onClick={addComponent} text="Add Block"></CustomButton>
         {components.map((item, i) => ( <Custom text={item} /> ))} 
+        {/* End of feature lines */}
         {Object.keys(blocks).map((blockName: string, index: number) => (
           <StyledButton
             data-testid={`block-add-${blockName}`}
