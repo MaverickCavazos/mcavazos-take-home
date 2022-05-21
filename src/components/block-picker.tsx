@@ -69,6 +69,7 @@ const PreviewButton = styled(Button)`
 `;
 
 
+
 const RenderInWindow = (props) => {
   const [container, setContainer] = useState(null);
   const newWindow = useRef(null);
@@ -110,14 +111,12 @@ interface BlockPickerProps {
 const BlockPicker: React.FunctionComponent<BlockPickerProps> = ({ addBlock, className }) => {
 
   //lines for the add new block feature
-  const [components, setComponents] = useState(["Sample Component"]); 
+  const [components, setComponents] = useState([]); 
   
   function addComponent() { 
-    
-    setComponents([...components, "Sample Component"]) 
-    
+    setComponents([...components, <Custom/>]) 
   } 
-
+  
   const [open, setOpen] = useState();
 
    
@@ -134,7 +133,12 @@ const BlockPicker: React.FunctionComponent<BlockPickerProps> = ({ addBlock, clas
       </HeaderSection>
       <BlockSection>
         <CustomButton onClick={addComponent} text="Add Block"></CustomButton>
-        {components.map((item, i) => ( <Custom text={item} /> ))} 
+        {components.map((blockName: string, index: number) => ( 
+        <StyledButton  
+        text="Custom"
+        data-testid={`block-add-${blockName}`} 
+        key={index} 
+        onClick={() => addBlock(blockName)}></StyledButton> ))} 
         {/* End of feature lines */}
         {Object.keys(blocks).map((blockName: string, index: number) => (
           <StyledButton
