@@ -1,7 +1,5 @@
 import React from "react";
-import Site from "./site";
 import styled from "styled-components";
-import { Icon } from "@blueprintjs/core";
 import blocks from "../components/blocks";
 import { Block } from '../types';
 

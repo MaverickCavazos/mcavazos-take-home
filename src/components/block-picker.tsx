@@ -68,7 +68,7 @@ const PreviewButton = styled(Button)`
   float:right;
 `;
 
-
+//Render new window for preview
 
 const RenderInWindow = (props) => {
   const [container, setContainer] = useState(null);
@@ -113,10 +113,13 @@ const BlockPicker: React.FunctionComponent<BlockPickerProps> = ({ addBlock, clas
   //lines for the add new block feature
   const [components, setComponents] = useState([]); 
   
+
+  //add new custom component to blocks
   function addComponent() { 
     setComponents([...components, <Custom/>]) 
   } 
   
+  //state for renderwindow
   const [open, setOpen] = useState();
 
    
